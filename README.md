@@ -243,6 +243,99 @@ var alert = new SweetAlert2Model(new SweetAlert2Options(
 await Swal.Alert(alert);
 ```
 
+### 3. Recomendação de uso com ComponentBase
+Futuramente será empacotado para facilitar o uso via herança.
+
+``` csharp
+public class SweetAlertBlazorService(ISweetAlert2Service service) : IAlertService
+{
+    public Task<SweetAlert2Return> ShowAsync(SweetAlert2 alert)
+        => service.Alert(alert).AsTask();
+}
+```
+
+``` csharp
+public class SweetAlertFactory : IAlertFactory
+{
+    public SweetAlert2 FromOptions(SweetAlert2Options options)
+        => SweetAlert2Helper.CreateAlert(options);
+
+    public SweetAlert2 Success(string title, string message)
+        => SweetAlert2Helper.CreateSuccessAlert(title, message);
+
+    public SweetAlert2 Error(string title, string message)
+        => SweetAlert2Helper.CreateErrorAlert(title, message);
+
+    public SweetAlert2 Info(string title, string message)
+        => SweetAlert2Helper.CreateInfoAlert(title, message);
+
+    public SweetAlert2 Warning(string title, string message)
+        => SweetAlert2Helper.CreateWarningAlert(title, message);
+
+    public SweetAlert2 Confirm(string title, string message)
+        => SweetAlert2Helper.CreateConfirmAlert(title, message);
+
+    public SweetAlert2 ConfirmYesNo(string title, string message)
+        => SweetAlert2Helper.CreateConfirmYNAlert(title, message);
+}
+```
+
+``` csharp
+/// <summary>
+/// Classe base para páginas Blazor que estende a funcionalidade de alertas utilizando o serviço SweetAlert2.
+/// Esta classe fornece métodos genéricos para exibir diferentes tipos de alertas (sucesso, erro, confirmação, etc.).
+/// </summary>
+public abstract class BaseAlertPage : ComponentBase
+{
+    [Inject] protected IAlertService Alerts { get; set; } = default!;
+    [Inject] protected IAlertFactory AlertFactory { get; set; } = default!;
+
+    #region Generic Alert Methods
+
+    protected Task<SweetAlert2Return> ShowAlertAsync(SweetAlert2 alert)
+        => Alerts.ShowAsync(alert);
+
+    #endregion
+
+    #region Custom Alerts
+
+    protected Task<SweetAlert2Return> Alerta(SweetAlert2Options options)
+        => ShowAlertAsync(AlertFactory.FromOptions(options));
+
+    protected Task<SweetAlert2Return> AlertaSucesso(string texto)
+        => ShowAlertAsync(AlertFactory.Success("Sucesso!", texto));
+
+    protected Task<SweetAlert2Return> AlertaSucesso(string titulo, string texto)
+        => ShowAlertAsync(AlertFactory.Success(titulo, texto));
+
+    protected Task<SweetAlert2Return> AlertaErro(string texto)
+        => ShowAlertAsync(AlertFactory.Error("Erro!", texto));
+
+    protected Task<SweetAlert2Return> AlertaErro(string titulo, string texto)
+        => ShowAlertAsync(AlertFactory.Error(titulo, texto));
+
+    protected Task<SweetAlert2Return> AlertaFalha(string texto)
+        => ShowAlertAsync(AlertFactory.Warning("Informação", texto));
+
+    protected Task<SweetAlert2Return> AlertaAviso(string texto)
+        => ShowAlertAsync(AlertFactory.Warning("Atenção!", texto));
+
+    protected Task<SweetAlert2Return> AlertaInfo(string texto)
+        => ShowAlertAsync(AlertFactory.Info("Informação", texto));
+
+    protected Task<SweetAlert2Return> AlertaInfo(string titulo, string texto)
+        => ShowAlertAsync(AlertFactory.Info(titulo, texto));
+
+    protected Task<SweetAlert2Return> AlertaConfirmacao(string texto)
+        => ShowAlertAsync(AlertFactory.Confirm(string.Empty, texto));
+
+    protected Task<SweetAlert2Return> AlertaConfirmacaoYN(string texto)
+        => ShowAlertAsync(AlertFactory.ConfirmYesNo(string.Empty, texto));
+
+    #endregion
+}
+```
+
 ---
 
 ## ❗ Erros Comuns
