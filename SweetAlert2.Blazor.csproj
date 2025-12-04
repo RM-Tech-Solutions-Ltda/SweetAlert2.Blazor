@@ -7,7 +7,6 @@
 
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<!-- NuGet metadata -->
 		<PackageId>SweetAlert2.Blazor</PackageId>
 		<Version>1.0.0</Version>
 		<Authors>Rennan Mendes Serenza</Authors>
@@ -22,11 +21,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="_content\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="wwwroot\**" Pack="true" PackagePath="wwwroot" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

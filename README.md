@@ -29,6 +29,10 @@ O **SweetAlert2.Blazor** é um wrapper robusto, tipado e moderno para exibir ale
 
 O principal objetivo é fornecer uma **API C# limpa, intuitiva e 100% assíncrona**.
 
+### 🧪 Exemplos
+<img src="Docs/Exemplo_1.png" alt="Exemplo com título" width="35%"/>
+<img src="Docs/Exemplo_2.png" alt="Exemplo sem título" width="42%"/>
+
 ---
 
 ## 🔥 Recursos do Pacote
